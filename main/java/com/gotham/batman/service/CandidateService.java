@@ -6,5 +6,5 @@ public interface CandidateService {
 	public void addCandidate(Candidate candidate) ;
 	public void deleteCandidate(Integer id) ;
 //	public void getAllCandidates();
-//	public Candidate getCandidateById();
+	public Candidate getCandidateById(Integer id);
 }

@@ -1,5 +1,8 @@
 package com.gotham.batman.serviceImpl;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +24,15 @@ public class CandidateServiceImpl implements CandidateService {
 	}
 //	public List<Candidate> getAllCandidates()
 //	{
+//		List<Optional<Candidate>> optionalEntity =  dao.findAll();
+//		 RoomEntity roomEntity = optionalEntity.get();
+//		List<Candidate> candidates=
 //		return dao.findAll();
 //	}
-//	public Candidate getCandidateById(Integer id)
-//	{
-//		Candidate candidate=(Candidate)dao.findById(id);
-//		return candidate;
-//	}
+	public Candidate getCandidateById(Integer id)
+	{
+		Optional<Candidate> optionalEntity =  dao.findById(id);
+		 Candidate candidate = optionalEntity.get();
+		return candidate;
+	}
 }

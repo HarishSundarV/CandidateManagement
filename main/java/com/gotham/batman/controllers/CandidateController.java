@@ -31,6 +31,12 @@ public class CandidateController {
 		candidateService.deleteCandidate(Id);
 	}
 	
+	@GetMapping("/getcandidate/{Id}")
+	public Candidate getCandidateById(@PathVariable Integer Id)
+	{
+		return candidateService.getCandidateById(Id);
+	}
+	
 //	@GetMapping("/getallcandidates")
 //	public List<Candidate> getAllCandidates()
 //	{
