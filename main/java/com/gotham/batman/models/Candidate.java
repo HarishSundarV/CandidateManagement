@@ -23,6 +23,18 @@ public class Candidate {
 	{
 		
 	}
+	public Candidate(int id,String firstName, String lastName, String email, String location, String feedback,
+			String jobDescription, String contactNumber) {
+		super();
+		this.id=id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.location = location;
+		this.feedback = feedback;
+		this.jobDescription = jobDescription;
+		this.contactNumber = contactNumber;
+	}
 	public Candidate(String firstName, String lastName, String email, String location, String feedback,
 			String jobDescription, String contactNumber) {
 		super();

@@ -35,4 +35,12 @@ public class CandidateServiceImpl implements CandidateService {
 		 Candidate candidate = optionalEntity.get();
 		return candidate;
 	}
+	public List<Candidate> getAllCandidates()
+	{
+		return dao.getAllCandidates();
+	}
+	public List<Candidate> getCandidateByLocation(String location_choice)
+	{
+		return dao.getCandidateByLocation(location_choice);
+	}
 }
