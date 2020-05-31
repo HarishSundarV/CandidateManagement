@@ -11,17 +11,31 @@ public class Candidate {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	private String firstName;
+	
 	private String lastName;
 	private String email;
 	private String location;
 	private String feedback;
 	private String jobDescription;
 	private String contactNumber;
+	
+	public Candidate()
+	{
+		
+	}
+	public Candidate(String firstName, String lastName, String email, String location, String feedback,
+			String jobDescription, String contactNumber) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.location = location;
+		this.feedback = feedback;
+		this.jobDescription = jobDescription;
+		this.contactNumber = contactNumber;
+	}
 	public int getId() {
 		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
 	}
 	public String getFirstName() {
 		return firstName;
