@@ -24,15 +24,16 @@ public class CandidateController {
 
 	public String addCandidate(@RequestBody Candidate candidate)
 	{
-		System.out.println(candidate.toString());
+		//System.out.println(candidate.toString());
 		//candidateService.addCandidate(new Candidate("harish","sundar","harish@gmail.com","cadvd","sdsd","vvewv","wewre"));
 		candidateService.addCandidate(candidate);
 		return "completed";
 	}
 	@DeleteMapping("/deletecandidate/{Id}")
-	public void deleteCandidate(@PathVariable Integer Id)
+	public List<Candidate> deleteCandidate(@PathVariable Integer Id)
 	{
 		candidateService.deleteCandidate(Id);
+		return candidateService.getAllCandidates();
 	}
 	
 	@GetMapping("/getcandidatebyid/{Id}")
