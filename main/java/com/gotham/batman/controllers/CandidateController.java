@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,13 +38,13 @@ public class CandidateController {
 	}
 	
 	@GetMapping("/getcandidatebyid/{Id}")
-	public Candidate getCandidateById(@PathVariable Integer Id)
+	public List<Candidate> getCandidateById(@PathVariable Integer Id)
 	{
 		return candidateService.getCandidateById(Id);
 	}
 	
 	@GetMapping("/getcandidatebylocation/{location}")
-	public List<Candidate> getCandidateById(@PathVariable String location)
+	public List<Candidate> getCandidateByLoc(@PathVariable String location)
 	{
 		return candidateService.getCandidateByLocation(location);
 	}
@@ -53,5 +54,17 @@ public class CandidateController {
 	{
 		return candidateService.getAllCandidates();
 	}
-
+	@GetMapping("/getlocationcount/{location}")
+	public Integer getLocationCount(@PathVariable String location)
+	{
+		return candidateService.getLocationCount(location);
+	}
+	@PostMapping("/updatecandidate/{id}")
+	public List<Candidate> updateCandidate(@RequestBody Candidate candidate,@PathVariable Integer id)
+	{
+		System.out.println(id);
+		candidateService.updateCandidate(new Candidate(id,candidate.getFirstName(),candidate.getLastName(),candidate.getEmail(),candidate.getLocation(),candidate.getFeedback(),candidate.getJobDescription(),candidate.getContactNumber()));
+		return candidateService.getAllCandidates();
+	}
+	
 }

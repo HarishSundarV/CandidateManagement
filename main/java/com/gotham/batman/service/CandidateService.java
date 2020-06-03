@@ -8,6 +8,8 @@ public interface CandidateService {
 	public void addCandidate(Candidate candidate) ;
 	public void deleteCandidate(Integer id) ;
 	public List<Candidate> getAllCandidates();
-	public Candidate getCandidateById(Integer id);
+	public List<Candidate> getCandidateById(Integer id);
 	public List<Candidate> getCandidateByLocation(String location);
+	public void updateCandidate(Candidate candidate);
+	public Integer getLocationCount(String location);
 }

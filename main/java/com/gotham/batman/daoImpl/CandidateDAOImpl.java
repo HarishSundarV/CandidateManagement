@@ -45,4 +45,11 @@ public class CandidateDAOImpl implements CandidateDAOCustom{
 	                        )
 	        );
 	}
+	public Integer getCountByLocation(String location_choice)
+	{
+		String sql="SELECT COUNT(*) FROM CANDIDATE WHERE LOCATION ='"+location_choice+"'";
+		System.out.println(sql);
+		return jdbcTemplate.queryForObject(sql, Integer.class);
+	}
+	
 }
