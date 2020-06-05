@@ -1,6 +1,7 @@
 package com.gotham.batman.controllers;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gotham.batman.models.Candidate;
+import com.gotham.batman.models.LocationCount;
 import com.gotham.batman.service.CandidateService;
 
 @RestController
@@ -21,8 +23,9 @@ import com.gotham.batman.service.CandidateService;
 public class CandidateController {
 	@Autowired
 	private CandidateService candidateService;
+	private final static Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@RequestMapping(value="/addcandidate", method=RequestMethod.POST)
-
+	
 	public String addCandidate(@RequestBody Candidate candidate)
 	{
 		//System.out.println(candidate.toString());
@@ -30,6 +33,7 @@ public class CandidateController {
 		candidateService.addCandidate(candidate);
 		return "completed";
 	}
+	
 	@DeleteMapping("/deletecandidate/{Id}")
 	public List<Candidate> deleteCandidate(@PathVariable Integer Id)
 	{
@@ -41,6 +45,11 @@ public class CandidateController {
 	public List<Candidate> getCandidateById(@PathVariable Integer Id)
 	{
 		return candidateService.getCandidateById(Id);
+	}
+	@GetMapping("/getuserbyid/{Id}")
+	public Candidate getUserById(@PathVariable Integer Id)
+	{
+		return candidateService.getUserById(Id);
 	}
 	
 	@GetMapping("/getcandidatebylocation/{location}")
@@ -54,10 +63,11 @@ public class CandidateController {
 	{
 		return candidateService.getAllCandidates();
 	}
-	@GetMapping("/getlocationcount/{location}")
-	public Integer getLocationCount(@PathVariable String location)
+	
+	@GetMapping("/getlocationcount")
+	public List<LocationCount> getLocationCount()
 	{
-		return candidateService.getLocationCount(location);
+		return candidateService.getLocation();
 	}
 	@PostMapping("/updatecandidate/{id}")
 	public List<Candidate> updateCandidate(@RequestBody Candidate candidate,@PathVariable Integer id)

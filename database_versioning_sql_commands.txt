@@ -1,0 +1,19 @@
+CREATE TABLE candidate_history LIKE Candidate;
+
+ ALTER TABLE MyDB.data_history MODIFY COLUMN id int(11) NOT NULL,
+    ->    DROP PRIMARY KEY, ENGINE = MyISAM, ADD action VARCHAR(8) DEFAULT 'insert' FIRST,
+    ->    ADD revision INT(6) NOT NULL AUTO_INCREMENT AFTER action,
+    ->    ADD dt_datetime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER revision,
+    ->    ADD PRIMARY KEY (id, revision);
+
+CREATE TRIGGER insert_trigger AFTER INSERT ON candidate FOR EACH ROW
+    INSERT INTO candidate_history SELECT 'insert', NULL, NOW(), d.* 
+    FROM candidate AS d WHERE d.id = NEW.id;
+
+CREATE TRIGGER delete_trigger AFTER UPDATE ON candidate FOR EACH ROW
+    INSERT INTO candidate_history SELECT 'update', NULL, NOW(), d.*
+    FROM candidate AS d WHERE d.id = NEW.id;
+
+CREATE TRIGGER delete_trigger BEFORE DELETE ON candidate FOR EACH ROW
+    INSERT INTO candidate_history SELECT 'delete', NULL, NOW(), d.* 
+    FROM candidate AS d WHERE d.id = OLD.id;
