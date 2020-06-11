@@ -13,6 +13,7 @@ import com.gotham.batman.models.LocationCount;
 public class CandidateDAOImpl implements CandidateDAOCustom{
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	private final String CHECK_USER = "SELECT count(*) FROM user WHERE id = ?";
 	public List<Candidate> getAllCandidates()
 	{
 		 try {
@@ -75,28 +76,13 @@ public class CandidateDAOImpl implements CandidateDAOCustom{
 			return null;
 		}
 	}
-//	public List<Candidate> getLocation()
-//	{
-//		 return jdbcTemplate.query(
-//	                "select * from candidate where location=?",new Object[]{location_choice},
-//	                (rs, rowNum) ->
-//	                        new Candidate(
-//	                        		 rs.getInt("id"),
-//	                        	 rs.getString("first_name"),
-//	                                rs.getString("last_name"),
-//	                               rs.getString("email"),
-//	                               rs.getString("location"),
-//	                               rs.getString("feedback"),
-//	                               rs.getString("job_description"),
-//	                               rs.getString("contact_number")                        
-//	                        )
-//	        );
-//	}
-	public Integer getCountByLocation(String location_choice)
-	{
-		String sql="SELECT COUNT(*) FROM CANDIDATE WHERE LOCATION ='"+location_choice+"'";
-		System.out.println(sql);
-		return jdbcTemplate.queryForObject(sql, Integer.class);
+public boolean checkUser(String token) {
+		
+		if (jdbcTemplate.queryForObject(CHECK_USER, new Object[] { token }, Integer.class) > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 }

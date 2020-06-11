@@ -92,4 +92,15 @@ public class CandidateServiceImpl implements CandidateService {
 		// dao.getLocation().get(1).toString();
 		return dao.getLocation();
 	}
+	public String checkUser(String token) {
+		
+		String responseString;
+		if(	dao.checkUser(token))
+			responseString="Login sucessfull and User is Authenticated";
+		else {
+			responseString="Login failed,please try again";
+		}
+		
+		return responseString;
+	}
 }

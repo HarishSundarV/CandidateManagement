@@ -14,4 +14,5 @@ public interface CandidateService {
 	public String updateCandidate(Candidate candidate);	
 	public Candidate getUserById(Integer id);
 	public List<LocationCount> getLocation();
+	public String checkUser(String token);
 }

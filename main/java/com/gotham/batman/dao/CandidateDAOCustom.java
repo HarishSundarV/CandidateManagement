@@ -8,7 +8,6 @@ import com.gotham.batman.models.LocationCount;
 public interface CandidateDAOCustom {
 	List<Candidate> getAllCandidates();
 	public List<Candidate> getCandidateByLocation(String location_choice);
-	public Integer getCountByLocation(String location_choice);
 	public List<LocationCount> getLocation();
-	
+	public boolean checkUser(String token);
 }
