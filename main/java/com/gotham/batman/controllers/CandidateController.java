@@ -28,82 +28,88 @@ public class CandidateController {
 	private final static Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@RequestMapping(value="/addcandidate", method=RequestMethod.POST)
 	
-	public String addCandidate(@RequestBody Candidate candidate,@RequestHeader("Authorization") String token)
+	public String addCandidate(@RequestBody Candidate candidate)
 	{
-		if(candidateService.checkUser(token)=="Login sucessfull and User is Authenticated") {
+		
 		LOGGER.log(Level.INFO, "Candidate Added	"); 
 		candidateService.addCandidate(candidate);
 		return "completed";
-		}
-		return null;
+	
 	}
+
 	
 	@DeleteMapping("/deletecandidate/{Id}")
-	public List<Candidate> deleteCandidate(@PathVariable Integer Id,@RequestHeader("Authorization") String token)
+	public List<Candidate> deleteCandidate(@PathVariable Integer Id)
 	{
-		if(candidateService.checkUser(token)=="Login sucessfull and User is Authenticated") {
+	
 		LOGGER.log(Level.INFO, "Candidate Deleted	");
-		candidateService.deleteCandidate(Id);
-		return candidateService.getAllCandidates();
-		}
-		return null;
+		return candidateService.deleteCandidate(Id);
+		
+		
+		//return candidateService.getAllCandidates();
+	
 	}
 	
 	@GetMapping("/getcandidatebyid/{Id}")
-	public List<Candidate> getCandidateById(@PathVariable Integer Id,@RequestHeader("Authorization") String token)
-	{
-		if(candidateService.checkUser(token)=="Login sucessfull and User is Authenticated") {
+	public List<Candidate> getCandidateById(@PathVariable Integer Id)
+	{	
 		return candidateService.getCandidateById(Id);
-		}
-		return null;
+		
 	}
 	@GetMapping("/getuserbyid/{Id}")
-	public Candidate getUserById(@PathVariable Integer Id,@RequestHeader("Authorization") String token)
+	public Candidate getUserById(@PathVariable Integer Id)
 	{
-		if(candidateService.checkUser(token)=="Login sucessfull and User is Authenticated") {
-		return candidateService.getUserById(Id);
-		}
-		return null;
+		
+		
+			return candidateService.getUserById(Id);
+		
 	}
 	
 	@GetMapping("/getcandidatebylocation/{location}")
-	public List<Candidate> getCandidateByLoc(@PathVariable String location,@RequestHeader("Authorization") String token)
+	public List<Candidate> getCandidateByLoc(@PathVariable String location)
 	{
-		if(candidateService.checkUser(token)=="Login sucessfull and User is Authenticated") {
-		return candidateService.getCandidateByLocation(location);
-		}
-		return null;
-	}
 	
+		return candidateService.getCandidateByLocation(location);
+	
+	}
+
 	@GetMapping("/getallcandidates")
-	public List<Candidate> getAllCandidates(@RequestHeader("Authorization") String token)
+	public List<Candidate> getAllCandidates()
 	{
-		if(candidateService.checkUser(token)=="Login sucessfull and User is Authenticated") {
+		
 		return candidateService.getAllCandidates();
-		}
-		return null;
+		
 	}
 	
 	@GetMapping("/getlocationcount")
-	public List<LocationCount> getLocationCount(@RequestHeader("Authorization") String token)
-	{if(candidateService.checkUser(token)=="Login sucessfull and User is Authenticated") {
+	public List<LocationCount> getLocationCount()
+	{
+	
 		return candidateService.getLocation();
+	
 	}
-	return null;
+	@GetMapping("/getjob")
+	public List<LocationCount> getJob()
+	{
+		
+		return candidateService.getJob();
+	
+	}
+	@GetMapping("/getskill")
+	public List<LocationCount> getSkill()
+	{
+		
+		return candidateService.getSkill();
+	
 	}
 	@PostMapping("/updatecandidate/{id}")
-	public List<Candidate> updateCandidate(@RequestBody Candidate candidate,@PathVariable Integer id,@RequestHeader("Authorization") String token)
+	public List<Candidate> updateCandidate(@RequestBody Candidate candidate,@PathVariable Integer id)
 	{
-		if(candidateService.checkUser(token)=="Login sucessfull and User is Authenticated") {
+		
 		LOGGER.log(Level.INFO, "Candidate Updated	");
-		candidateService.updateCandidate(new Candidate(id,candidate.getFirstName(),candidate.getLastName(),candidate.getEmail(),candidate.getLocation(),candidate.getFeedback(),candidate.getJobDescription(),candidate.getContactNumber()));
-		return candidateService.getAllCandidates();
-		}
-		return null;
+		return candidateService.updateCandidate(new Candidate(id,candidate.getFirstName(),candidate.getLastName(),candidate.getEmail(),candidate.getLocation(),candidate.getFeedback(),candidate.getJobDescription(),candidate.getContactNumber()));
+	//	return candidateService.getAllCandidates();
+		
 	}
-	@GetMapping("/users")
-	String checkUser(@RequestHeader("Authorization") String token)
-	{
-			return candidateService.checkUser(token);
-	}
+	
 }

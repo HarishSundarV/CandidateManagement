@@ -16,7 +16,7 @@ public class CandidateDAOImpl implements CandidateDAOCustom{
 	private final String CHECK_USER = "SELECT count(*) FROM user WHERE id = ?";
 	public List<Candidate> getAllCandidates()
 	{
-		 try {
+		 
 			return jdbcTemplate.query(
 			            "select * from candidate",
 			            (rs, rowNum) ->
@@ -31,17 +31,14 @@ public class CandidateDAOImpl implements CandidateDAOCustom{
 			                           rs.getString("contact_number")                        
 			                    )
 			    );
-		} catch (DataAccessException e) {
-			
-			e.printStackTrace();
-			return null;
-		}
+		
 	}
 	public List<Candidate> getCandidateByLocation(String location_choice)
 	{
-		 try {
-			return jdbcTemplate.query(
-			            "select * from candidate where location=?",new Object[]{location_choice},
+	
+			 String sql="select * from candidate where location like '%"+location_choice+"%'";
+			return jdbcTemplate.query(sql,
+			 //           "select * from candidate where location like '%'?'%'",new Object[]{location_choice},
 			            (rs, rowNum) ->
 			                    new Candidate(
 			                    		 rs.getInt("id"),
@@ -54,27 +51,39 @@ public class CandidateDAOImpl implements CandidateDAOCustom{
 			                           rs.getString("contact_number")                        
 			                    )
 			    );
-		} catch (DataAccessException e) {
-			
-			e.printStackTrace();
-			return null;
-		}
+		
 	}
 	public List<LocationCount> getLocation()
 	{
 		
-		 try {
+		
 			return jdbcTemplate.query(
 			            "select location,count(*) as count from candidate group by location",
 			            (rs, rowNum) ->
 			                    new LocationCount(rs.getString("location"), rs.getInt("count")   )   	                      
 			                    
 			    );
-		} catch (DataAccessException e) {
-			
-			e.printStackTrace();
-			return null;
-		}
+		
+	}
+	public int getSkillCount(String skill) {
+	   
+	    String sql = "SELECT count(*) FROM candidate WHERE last_name like '%"+skill+"%'";
+
+	    Integer count = (Integer) jdbcTemplate.queryForObject(sql, Integer.class);
+
+	    return count;
+	}
+	public List<LocationCount> getJobCount()
+	{
+		
+		
+			return jdbcTemplate.query(
+			            "select job_description,count(*) as count from candidate group by job_description;",
+			            (rs, rowNum) ->
+			                    new LocationCount(rs.getString("job_description"), rs.getInt("count")   )   	                      
+			                    
+			    );
+		
 	}
 public boolean checkUser(String token) {
 		

@@ -7,12 +7,14 @@ import com.gotham.batman.models.LocationCount;
 
 public interface CandidateService {
 	public String addCandidate(Candidate candidate) ;
-	public String deleteCandidate(Integer id) ;
+	public List<Candidate> deleteCandidate(Integer id) ;
 	public List<Candidate> getAllCandidates();
 	public List<Candidate> getCandidateById(Integer id);
 	public List<Candidate> getCandidateByLocation(String location);
-	public String updateCandidate(Candidate candidate);	
+	public List<Candidate> updateCandidate(Candidate candidate);	
 	public Candidate getUserById(Integer id);
 	public List<LocationCount> getLocation();
 	public String checkUser(String token);
+	public List<LocationCount> getJob();
+	public List<LocationCount> getSkill();
 }

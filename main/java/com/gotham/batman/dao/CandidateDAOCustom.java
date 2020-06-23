@@ -10,4 +10,6 @@ public interface CandidateDAOCustom {
 	public List<Candidate> getCandidateByLocation(String location_choice);
 	public List<LocationCount> getLocation();
 	public boolean checkUser(String token);
+	public List<LocationCount> getJobCount();
+	public int getSkillCount(String skill);
 }

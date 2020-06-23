@@ -2,6 +2,8 @@ package com.gotham.batman;
 
 
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -14,6 +16,7 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 //import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -24,20 +27,23 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.gotham.batman.dao.CandidateDAO;
+import com.gotham.batman.daoImpl.CandidateDAOImpl;
 import com.gotham.batman.models.Candidate;
 import com.gotham.batman.models.LocationCount;
 import com.gotham.batman.service.CandidateService;
 
 @SpringBootTest
 class CandidateManagementApplicationTests  {
+//	@Mock
+//	List<Candidate> CandidateList = new ArrayList<Candidate>();
 	@Mock
-	List<Candidate> CandidateList = new ArrayList<Candidate>();
-	@Autowired
 	private JdbcTemplate jdbc;
 	@Autowired
 	private CandidateService service;
 	@MockBean
 	private CandidateDAO repository;
+	@InjectMocks
+	private CandidateDAOImpl dao;
 
 	@Test
 	public void getCandidatesTest() {
@@ -93,41 +99,28 @@ class CandidateManagementApplicationTests  {
 	// DAO layer tests 
 	
 	@Test
-	public void getDaoLocationCountTest() {
+	public void getAllCandidatesDAOTest() {
+		Candidate candidate = createCandidateForTest();
 
-		when(repository.getLocation())
-				.thenReturn(Stream.of(new LocationCount("bangalore", 2),new LocationCount("chennai", 8)).collect(Collectors.toList()));
-		assertEquals(2, repository.getLocation().size());
+		List<Candidate> candidateList = new ArrayList<Candidate>();
+		candidateList.add(candidate);
+		System.out.println(candidateList.size());
+		Mockito.when(jdbc.query(ArgumentMatchers.anyString(), ArgumentMatchers.any(RowMapper.class)))
+				.thenReturn(candidateList);
+		List<Candidate> list = dao.getAllCandidates();
+		assertEquals(1, list.size());
 	}
+	
 	@Test
-	public void getDaoAllTest() {
+	public void getAllCandidatesDifferentTest() {
 
-		when(repository.getAllCandidates())
-				.thenReturn(Stream.of(
-						new Candidate(1, "Developer", "Harish", "managerEmail", "contactNumber", "location", "skills", "32"),
-						new Candidate(2, "candidateName", "hiringManager", "managerEmail", "contactNumber", "location",
-								"skills", "expectedDuration")).collect(Collectors.toList()));
-		assertEquals(2, repository.getAllCandidates().size());
+	if(!dao.getAllCandidates().isEmpty()) {
+	List<Candidate> actualList = dao.getAllCandidates();
+	assertThat(actualList).isNotNull();
 	}
-//	
-//	@Test
-//	public void getAllCandidatesTest() {
-//		Candidate c = new Candidate();
-//		c.setContactNumber("9842422597");
-//		c.setEmail("harish@gmail.com");
-//		c.setFeedback("good");
-//		c.setLocation("chennai");
-//		c.setFirstName("harish");
-//		c.setLastName("sundar");
-//		c.setId(1);
-//		
-//		CandidateList.add(c);
-//		Mockito.when(jdbc.query("", ArgumentMatchers.any(RowMapper.class))).thenReturn(this.CandidateList);
-//		List<Candidate> list = repository.getAllCandidates();
-//		assertEquals(1, list.size());
-//	}
-	@Test
-	public void getCandidatesByLocationTest() {
+	}
+	public static Candidate createCandidateForTest()
+	{
 		Candidate c = new Candidate();
 		c.setContactNumber("9842422597");
 		c.setEmail("harish@gmail.com");
@@ -136,22 +129,30 @@ class CandidateManagementApplicationTests  {
 		c.setFirstName("harish");
 		c.setLastName("sundar");
 		c.setId(1);
-		List<Candidate> CandidateList = new ArrayList<Candidate>();
-		CandidateList.add(c);
-		Mockito.when(jdbc.query(ArgumentMatchers.anyString(), ArgumentMatchers.any(RowMapper.class))).thenReturn(CandidateList);
-		List<Candidate> list = repository.getCandidateByLocation("chennai");
+		return c;
+	}
+	@Test
+	public void getAllCandidatesDAOByLocationTest() {
+		Candidate candidate = createCandidateForTest();
+
+		List<Candidate> candidateList = new ArrayList<Candidate>();
+		candidateList.add(candidate);
+		System.out.println(candidateList.size());
+		Mockito.when(jdbc.query(ArgumentMatchers.anyString(), ArgumentMatchers.any(RowMapper.class)))
+				.thenReturn(candidateList);
+		List<Candidate> list = dao.getCandidateByLocation("chennai");
 		assertEquals(1, list.size());
+	}
+	@Test
+	public void getDaoLocationCountTest() {
+
+		when(dao.getLocation())
+				.thenReturn(Stream.of(new LocationCount("chennai", 5)).collect(Collectors.toList()));
+		assertEquals(1, dao.getLocation().size());
 	}
 	
 	
 	
-	// Controller tests
-//	@Test
-//	public void testShouldReturnMessage() throws Exception {
-//	mockMvc.perform(MockMvcRequestBuilders.get("/addcandidate")).andExpect(MockMvcResultMatchers.status().is(200))
-//	.andExpect(MockMvcResultMatchers.content().string("completed"))
-//	.andExpect(MockMvcResultMatchers.header().string("Content-Type", "text/plain;charset=UTF-8"))
-//	.andExpect(MockMvcResultMatchers.header().string("Content-Length", "11"));
-//	}
+
     
 }

@@ -25,15 +25,15 @@ public class CandidateServiceImpl implements CandidateService {
 		 String str = "Candidate "+candidate.getFirstName()+" got added\n "; 
 	      appendStrToFile(fileName, str); 
 		dao.save(candidate);
-		return "working";
+		return "completed";
 	}
 
-	public String deleteCandidate(Integer id) {
+	public List<Candidate> deleteCandidate(Integer id) {
 		String fileName="D:\\Accolite_training\\logs.log";
 		 String str = "Candidate "+id +" got updated\n "; 
 	      appendStrToFile(fileName, str); 
 		dao.deleteById(id);
-		return "working";
+		return dao.getAllCandidates();
 	}
 
 	public static void appendStrToFile(String fileName, String str) {
@@ -46,13 +46,6 @@ public class CandidateServiceImpl implements CandidateService {
 			System.out.println("exception occoured" + e);
 		}
 	}
-//	public List<Candidate> getAllCandidates()
-//	{
-//		List<Optional<Candidate>> optionalEntity =  dao.findAll();
-//		 RoomEntity roomEntity = optionalEntity.get();
-//		List<Candidate> candidates=
-//		return dao.findAll();
-//	}
 
 	public List<Candidate> getCandidateById(Integer id) {
 
@@ -78,19 +71,34 @@ public class CandidateServiceImpl implements CandidateService {
 		return dao.getCandidateByLocation(location_choice);
 	}
 
-	public String updateCandidate(Candidate candidate) {
+	public List<Candidate> updateCandidate(Candidate candidate) {
 		String fileName="D:\\Accolite_training\\logs.log";
 		 String str = "Candidate"+ candidate.getId()+", "+candidate.getFirstName()+" got updated\n "; 
 	      appendStrToFile(fileName, str); 
 		dao.save(new Candidate(candidate.getId(), candidate.getFirstName(), candidate.getLastName(),
 				candidate.getEmail(), candidate.getLocation(), candidate.getFeedback(), candidate.getJobDescription(),
 				candidate.getContactNumber()));
-		return "working";
+		return dao.getAllCandidates();
 	}
 
 	public List<LocationCount> getLocation() {
-		// dao.getLocation().get(1).toString();
+		
 		return dao.getLocation();
+	}
+	public List<LocationCount> getJob() {
+		
+		return dao.getJobCount();
+	}
+	
+	public List<LocationCount> getSkill()
+	{
+		List<LocationCount> count=new ArrayList<>();
+		count.add(new LocationCount("C",dao.getSkillCount("C")));
+		count.add(new LocationCount("Java",dao.getSkillCount("Java")));
+		count.add(new LocationCount("Spring",dao.getSkillCount("Spring")));
+		count.add(new LocationCount("Python",dao.getSkillCount("Python")));
+		return count;
+		
 	}
 	public String checkUser(String token) {
 		
